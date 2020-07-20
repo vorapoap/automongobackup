@@ -42,6 +42,7 @@ set -eo pipefail
 # DBNAME is required
 # Unecessary if backup all collections
 # EXCLUDE_COLLECTIONS=""
+# EXCLUDE_COLLECTIONS_PREFIX=""
 
 # Username to access the mongo server e.g. dbuser
 # Unnecessary if authentication is off
@@ -363,6 +364,14 @@ if [ "$EXCLUDE_COLLECTIONS" ]; then
     OPT="$OPT --excludeCollection $x"
   done
 fi
+
+# Do we need to exclude collections prefix?
+if [ "$EXCLUDE_COLLECTIONS_PREFIX" ]; then
+  for x in $EXCLUDE_COLLECTIONS_PREFIX; do
+    OPT="$OPT --excludeCollectionsWithPrefix $x"
+  done
+fi
+
 
 # Do we use a filter for hourly point-in-time snapshotting?
 if [ "$DOHOURLY" == "yes" ]; then
